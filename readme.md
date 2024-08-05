@@ -514,8 +514,8 @@ b. Setup Matomo Tracking API to use a Redis https://matomo.org/faq/on-premise/ho
   1. Get QueuedTracking from the Marketplace https://plugins.matomo.org/QueuedTracking
   2. Activate the QueuedTracking plugin in “Matomo Administration > Plugins “
   3. Under “Matomo Administration > System > General Settings > QueuedTracking”
-  4. Select Backend = MySQL Select Number of Queue workers = 1
-  5. Select Number of requests that are processed in one batch = 50
+  4. Select Backend = Redis and Redis port 6379 & database number = 9 & Select Number of Queue workers = 1 or 2
+  5. Select Number of requests that are processed in one batch = 50. This will mean your analytics reported won't be real-time but updated in batches of requests.
   6. Disable the setting Process during tracking request
   7. Then setup a cronjob that executes the command ./console queuedtracking:process every minute, for example:
 
