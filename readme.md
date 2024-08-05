@@ -576,6 +576,14 @@ Then to check this is working, you can keep track of the queue and see how big i
 ```
 /home/nginx/domains/analytics.domain.com/public/console queuedtracking:monitor
 ```
+```
+/home/nginx/domains/analytics.domain.com/public/console queuedtracking:monitor
+Queue is enabled
+Request sets in the queue will be processed automatically after a tracking request
+Up to 2 workers will be used
+Processor will start once there are at least 50 request sets in the queue
+17 (17+0) request sets left in queue. 1.19M used memory (1.39M peak). 0 workers active.
+```
 
 This will show the current state of the queue. In traffic peak time the queue will grow 1,000 or 10,000 requests or more, but usually the queue should be around 0-150 requests.
 
