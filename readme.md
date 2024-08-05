@@ -613,3 +613,26 @@ File to delete: index.html
 File to delete: maintenance.html
 ```
 
+Seems Matomo 5.1.0 isn't fully compatible with PHP 8.3 or at least a Matomo Plugin I installed isn't PHP 8.3 compatible. Seems to be related to Performance Audit Plugin compatibility https://github.com/matomo-org/matomo/issues/21775. The irony given what the plugin is meant for :) So will need to downgrade back to PHP 8.0.33 if I intend to use Performance Audit Plugin or deactive the plugin to use PHP 8.3.
+
+```
+/home/nginx/domains/analytics.domain.com/public/console queuedtracking:monitor                                             
+ERROR     [2024-08-05 09:53:01] 911986  Uncaught exception: TypeError: Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/analytics.domain.com/public/core/Console.php on line 180 and defined in /home/nginx/domains/analytics.domain.com/public/vendor/symfony/console/Application.php:592
+Stack trace:
+#0 /home/nginx/domains/analytics.domain.com/public/core/Console.php(180): Symfony\Component\Console\Application->has()
+#1 /home/nginx/domains/analytics.domain.com/public/core/Console.php(138): Piwik\Console->addCommandIfExists()
+#2 /home/nginx/domains/analytics.domain.com/public/core/Console.php(92): Piwik\Console->doRunImpl()
+#3 /home/nginx/domains/analytics.domain.com/public/vendor/symfony/console/Application.php(171): Piwik\Console->doRun()
+#4 /home/nginx/domains/analytics.domain.com/public/console(32): Symfony\Component\Console\Application->run()
+#5 {main}
+Uncaught exception in /home/nginx/domains/analytics.domain.com/public/vendor/symfony/console/Application.php line 592:
+Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/analytics.domain.com/public/core/Console.php on line 180
+```
+
+Matomo system summary
+
+```
+Matomo version: 5.1.0
+MySQL version: 10.11.8-MariaDB
+PHP version: 8.3.10
+```
