@@ -48,6 +48,54 @@ burie1quaiz2OhcauDohwaich
 /usr/local/src/centminmod/addons/mysqladmin_shell.sh createuserdb matomodb matomo_user $newpass
 ```
 
+There is also a Node.js dependency for some Matomo Plugins i.e. Performance Audit Plugin. So install Node.js via Centmin Mod `addons/nodejs.sh` addon installer.
+
+```
+/usr/local/src/centminmod/addons/nodejs.sh install
+```
+```
+node --version
+v20.16.0
+
+npm --version
+10.8.1
+```
+
+And YUM dependencies for Performance Audit Plugin. On Centmin Mod LEMP stack with AlmaLinux 9:
+
+List dependencies
+
+```
+yum -q list alsa-lib.x86_64 atk.x86_64 cups-libs.x86_64 gtk3.x86_64 ipa-gothic-fonts libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXrandr.x86_64 libXScrnSaver.x86_64 libXtst.x86_64 pango.x86_64 xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-fonts-cyrillic xorg-x11-fonts-misc xorg-x11-fonts-Type1 xorg-x11-utils | tr -s ' ' | column -t
+Installed                       Packages             
+alsa-lib.x86_64                 1.2.10-2.el9         @appstream
+atk.x86_64                      2.36.0-5.el9         @appstream
+cups-libs.x86_64                1:2.3.3op2-27.el9_4  @baseos
+gtk3.x86_64                     3.24.31-2.el9        @appstream
+libXcomposite.x86_64            0.4.5-7.el9          @appstream
+libXcursor.x86_64               1.2.0-7.el9          @appstream
+libXdamage.x86_64               1.1.5-7.el9          @appstream
+libXext.x86_64                  1.3.4-8.el9          @appstream
+libXi.x86_64                    1.7.10-8.el9         @appstream
+libXrandr.x86_64                1.5.2-8.el9          @appstream
+libXtst.x86_64                  1.2.3-16.el9         @appstream
+pango.x86_64                    1.48.7-3.el9         @appstream
+Available                       Packages             
+libXScrnSaver.x86_64            1.2.3-10.el9         appstream
+xorg-x11-fonts-100dpi.noarch    7.5-33.el9           appstream
+xorg-x11-fonts-75dpi.noarch     7.5-33.el9           appstream
+xorg-x11-fonts-Type1.noarch     7.5-33.el9           appstream
+xorg-x11-fonts-cyrillic.noarch  7.5-33.el9           appstream
+xorg-x11-fonts-misc.noarch      7.5-33.el9           appstream
+xorg-x11-utils.x86_64           7.5-40.el9           appstream
+```
+
+Install dependencies
+
+```
+yum -y install alsa-lib.x86_64 atk.x86_64 cups-libs.x86_64 gtk3.x86_64 ipa-gothic-fonts libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXrandr.x86_64 libXScrnSaver.x86_64 libXtst.x86_64 pango.x86_64 xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-fonts-cyrillic xorg-x11-fonts-misc xorg-x11-fonts-Type1 xorg-x11-utils --skip-broken
+```
+
 2. Ensure you have Letsencrypt integration and Nginx GeoIP 2 Lite Nginx module support enabled by setting up in Centmin Mod persistent config file `/etc/centminmod/custom_config.inc` the variables for:
 
 ```
