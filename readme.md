@@ -557,7 +557,7 @@ After you have set up the automatic archive script as explained above, you can s
 Click save to save your changes
 
 
-b. Setup Matomo Tracking API to use a Redis https://matomo.org/faq/on-premise/how-to-configure-matomo-to-handle-unexpected-peak-in-traffic/
+b. Setup Matomo Tracking API to use a Redis https://matomo.org/faq/on-premise/how-to-configure-matomo-to-handle-unexpected-peak-in-traffic/. Centmin Mod LEMP stack automatically installs Redis server out of the box listening on `127.0.0.1` with port `6379` with up to 15 databases available for databases 0 to 14.
 
   1. Get QueuedTracking from the Marketplace https://plugins.matomo.org/QueuedTracking
   2. Activate the QueuedTracking plugin in “Matomo Administration > Plugins “
