@@ -2,12 +2,12 @@
 
 1. Prepare your intended domain name or subdomain's DNS and Matomo MariaDB MySQL database name, user and password and Maxmind geolocation database license registration. Below guide will use 
 
-* subdomain hostname = `ma.domain.com` 
+* subdomain hostname = `u.domain.com` 
 * MariaDB database name = `matomodb`
 * MariaDB database username = `matomo_user`
 * MariaDB database username password = `matomopass`
 
-a. Update `ma.domain.com` DNS A record to point to Centmin Mod server's IPv4 IP address
+a. Update `u.domain.com` DNS A record to point to Centmin Mod server's IPv4 IP address
 
 b. Edit /etc/my.cnf and add `local-infile=1` to `[mysql]` and `[mysqld]` sections and remove existing `local-infile=0`
 
@@ -214,7 +214,7 @@ Usage: /bin/nv [-d yourdomain.com] [-s y|n|yd|le|led|lelive|lelived] [-u ftpuser
 For Centmin Mod Nginx vhost with Letsencrypt HTTPS default changing `ftpusername` to your desired pure-ftpd virtual FTP username. The password will be auto generated and displayed when creation run is completed.
 
 ```
-nv -d ma.domain.com -s lelived -u ftpusername
+nv -d u.domain.com -s lelived -u ftpusername
 ```
 
 You'll get information for your Nginx vhost like including the pure-ftpd virtual FTP user credentials https://centminmod.com/ftp.html:
@@ -225,49 +225,49 @@ FTP hostname : xxx.xxx.xxx.xxx
 FTP port : 21
 FTP mode : FTP (explicit SSL)
 FTP Passive (PASV) : ensure is checked/enabled
-FTP username created for ma.domain.com : ftpusername
-FTP password created for ma.domain.com : O2DxxxxxxJRHWKy
+FTP username created for u.domain.com : ftpusername
+FTP password created for u.domain.com : O2DxxxxxxJRHWKy
 -------------------------------------------------------------
-vhost for ma.domain.com created successfully
+vhost for u.domain.com created successfully
 
 AUDITD_ENABLE is set to = n
 
-domain: http://ma.domain.com
-vhost conf file for ma.domain.com created: /usr/local/nginx/conf/conf.d/ma.domain.com.conf
+domain: http://u.domain.com
+vhost conf file for u.domain.com created: /usr/local/nginx/conf/conf.d/u.domain.com.conf
 
-vhost ssl for ma.domain.com created successfully
+vhost ssl for u.domain.com created successfully
 
-domain: https://ma.domain.com
-vhost ssl conf file for ma.domain.com created: /usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf
+domain: https://u.domain.com
+vhost ssl conf file for u.domain.com created: /usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf
 
-upload files to /home/nginx/domains/ma.domain.com/public
-vhost log files directory is /home/nginx/domains/ma.domain.com/log
+upload files to /home/nginx/domains/u.domain.com/public
+vhost log files directory is /home/nginx/domains/u.domain.com/log
 ```
 
 And also shows log location if you need to revisit the credential info or troubleshoot Nginx vhost creation
 
 ```
 -------------------------------------------------------------
-vhost for ma.domain.com setup successfully
-ma.domain.com setup info log saved at: 
+vhost for u.domain.com setup successfully
+u.domain.com setup info log saved at: 
 /root/centminlogs/centminmod_040824-143037_nginx_addvhost_nv.log
 -------------------------------------------------------------
 ```
 
-`nv` command and centmin.sh menu option 2 or 22 will also save a `*-remove-*.log` like `centminmod_040824-143037_nginx_addvhost_nv-remove-cmds-ma.domain.com.log` with commands to remove the created Nginx vhost
+`nv` command and centmin.sh menu option 2 or 22 will also save a `*-remove-*.log` like `centminmod_040824-143037_nginx_addvhost_nv-remove-cmds-u.domain.com.log` with commands to remove the created Nginx vhost
 
 ```
 ls -lAhrt /root/centminlogs/ | tail -2
--rw-r--r-- 1 root root 1.4K Aug  4 14:30 centminmod_040824-143037_nginx_addvhost_nv-remove-cmds-ma.domain.com.log
+-rw-r--r-- 1 root root 1.4K Aug  4 14:30 centminmod_040824-143037_nginx_addvhost_nv-remove-cmds-u.domain.com.log
 -rw-r--r-- 1 root root 8.5K Aug  4 14:30 centminmod_040824-143037_nginx_addvhost_nv.log
 ```
 
 You can optionally setup some SSH command aliases commands for easier navigation of your Nginx vhost. Type in SSH session:
 
 ```
-alias myconf='nano /usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf'
-alias mylog='pushd /home/nginx/domains/ma.domain.com/log/'
-alias mypub='pushd /home/nginx/domains/ma.domain.com/public/'
+alias myconf='nano /usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf'
+alias mylog='pushd /home/nginx/domains/u.domain.com/log/'
+alias mypub='pushd /home/nginx/domains/u.domain.com/public/'
 ```
 
 and add these 3 lines into your `/root/.bashrc` file.
@@ -278,9 +278,9 @@ Then you'll be able to type:
 * `mylog` to change into Nginx vhost's log directory using pushd command
 * `mypub` to change into Nginx vhost's public web root directory
 
-5. Update Centmin Mod Nginx vhost config file `/usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf` for Matomo nginx rules
+5. Update Centmin Mod Nginx vhost config file `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf` for Matomo nginx rules
 
-Edit your Nginx vhost config file at `/usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf` replacing the default `location / {}` context content
+Edit your Nginx vhost config file at `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf` replacing the default `location / {}` context content
 
 ```
   location / {
@@ -366,25 +366,25 @@ with the below content
   }
 ```
 
-Optionally, you can enable Centmin Mod Nginx JSON formatted access logs for easier parsing of access logs by uncommenting the additional `access_log` line in `/usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf`.
+Optionally, you can enable Centmin Mod Nginx JSON formatted access logs for easier parsing of access logs by uncommenting the additional `access_log` line in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`.
 
 Change from
 
 ```
-  access_log /home/nginx/domains/ma.domain.com/log/access.log combined buffer=256k flush=5m;
-  #access_log /home/nginx/domains/ma.domain.com/log/access.json main_json buffer=256k flush=5m;
-  error_log /home/nginx/domains/ma.domain.com/log/error.log;
+  access_log /home/nginx/domains/u.domain.com/log/access.log combined buffer=256k flush=5m;
+  #access_log /home/nginx/domains/u.domain.com/log/access.json main_json buffer=256k flush=5m;
+  error_log /home/nginx/domains/u.domain.com/log/error.log;
 ```
 
 to
 
 ```
-  access_log /home/nginx/domains/ma.domain.com/log/access.log combined buffer=256k flush=5m;
-  access_log /home/nginx/domains/ma.domain.com/log/access.json main_json buffer=256k flush=5m;
-  error_log /home/nginx/domains/ma.domain.com/log/error.log;
+  access_log /home/nginx/domains/u.domain.com/log/access.log combined buffer=256k flush=5m;
+  access_log /home/nginx/domains/u.domain.com/log/access.json main_json buffer=256k flush=5m;
+  error_log /home/nginx/domains/u.domain.com/log/error.log;
 ```
 
-If using Cloudflare, uncomment and enable `/usr/local/nginx/conf/cloudflare.conf` include file in `/usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf`. This ensures Centmin Mod Nginx logs the real visitor IP address.
+If using Cloudflare, uncomment and enable `/usr/local/nginx/conf/cloudflare.conf` include file in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`. This ensures Centmin Mod Nginx logs the real visitor IP address.
 
 Change from
 
@@ -402,16 +402,16 @@ to
   include /usr/local/nginx/conf/cloudflare.conf;
 ```
 
-Comment out `/usr/local/nginx/conf/staticfiles.conf` and `/usr/local/nginx/conf/drop.conf` include files in `/usr/local/nginx/conf/conf.d/ma.domain.com.ssl.conf`
+Comment out `/usr/local/nginx/conf/staticfiles.conf` and `/usr/local/nginx/conf/drop.conf` include files in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`
 
 ```
   #include /usr/local/nginx/conf/staticfiles.conf;
   #include /usr/local/nginx/conf/drop.conf;
 ```
-and also comment out Centmin Mod Nginx autoprotect include file `/usr/local/nginx/conf/autoprotect/ma.domain.com/autoprotect-ma.domain.com.conf`
+and also comment out Centmin Mod Nginx autoprotect include file `/usr/local/nginx/conf/autoprotect/u.domain.com/autoprotect-u.domain.com.conf`
 
 ```
-  #include /usr/local/nginx/conf/autoprotect/ma.domain.com/autoprotect-ma.domain.com.conf;
+  #include /usr/local/nginx/conf/autoprotect/u.domain.com/autoprotect-u.domain.com.conf;
 ```
 
 Turn off the default `disable_function` for `shell_exec` as Matomo requires the use of it.
@@ -469,24 +469,24 @@ systemctl restart php-fpm
 
 Install Matomo as per guide at https://matomo.org/faq/on-premise/installing-matomo/.
 
-The created Nginx vhost's public web root is at `/home/nginx/domains/ma.domain.com/public`. I usually like to download files to a staging directory first one level above the public web root and then apply nginx user/group permissions and copy the extracted zip file contents to public web root.
+The created Nginx vhost's public web root is at `/home/nginx/domains/u.domain.com/public`. I usually like to download files to a staging directory first one level above the public web root and then apply nginx user/group permissions and copy the extracted zip file contents to public web root.
 
 ```
-mkdir -p /home/nginx/domains/ma.domain.com/matomo-downloads
+mkdir -p /home/nginx/domains/u.domain.com/matomo-downloads
 # create matomo-archives directory for cron task archive logs
-mkdir -p /home/nginx/domains/ma.domain.com/matomo-archives
-cd /home/nginx/domains/ma.domain.com/matomo-downloads
-wget -O /home/nginx/domains/ma.domain.com/matomo-downloads/matomo.zip https://builds.matomo.org/matomo.zip
+mkdir -p /home/nginx/domains/u.domain.com/matomo-archives
+cd /home/nginx/domains/u.domain.com/matomo-downloads
+wget -O /home/nginx/domains/u.domain.com/matomo-downloads/matomo.zip https://builds.matomo.org/matomo.zip
 unzip matomo.zip
 chown -R nginx:nginx matomo
 cd matomo
-\cp -af * /home/nginx/domains/ma.domain.com/public
+\cp -af * /home/nginx/domains/u.domain.com/public
 ```
 
 Listing public web root's contents after Matomo files copied over:
 
 ```
-ls -lah /home/nginx/domains/ma.domain.com/public
+ls -lah /home/nginx/domains/u.domain.com/public
 total 428K
 drwxr-s--- 13 nginx nginx 4.0K Aug  4 14:42 .
 drwxr-s---  7 nginx nginx   84 Aug  4 14:39 ..
@@ -533,14 +533,14 @@ drwxr-sr-x 22 nginx nginx  321 Jun 10 07:48 vendor
 
 7. Setup Matomo
 
-Open your web browser and navigate to the URL to which you uploaded Matomo - `https://ma.domain.com`. If everything is uploaded correctly, you should see the Matomo Installation Welcome Screen and proceed as outlined at
+Open your web browser and navigate to the URL to which you uploaded Matomo - `https://u.domain.com`. If everything is uploaded correctly, you should see the Matomo Installation Welcome Screen and proceed as outlined at
 
 8. Setup Matomo set up auto-archiving cron task
 
-Setup Matomo set up auto-archiving cron task as per https://matomo.org/docs/setup-auto-archiving/ with the path to your console at `/home/nginx/domains/ma.domain.com/public/console` and url to `https://ma.domain.com` install location
+Setup Matomo set up auto-archiving cron task as per https://matomo.org/docs/setup-auto-archiving/ with the path to your console at `/home/nginx/domains/u.domain.com/public/console` and url to `https://u.domain.com` install location
 
 ```
-5 * * * * /usr/local/bin/php /home/nginx/domains/ma.domain.com/public/console core:archive --url=https://ma.domain.com > /home/nginx/domains/ma.domain.com/matomo-archives/matomo-archive.log
+5 * * * * /usr/local/bin/php /home/nginx/domains/u.domain.com/public/console core:archive --url=https://u.domain.com > /home/nginx/domains/u.domain.com/matomo-archives/matomo-archive.log
 ```
 
 You can use `crontab -e` command to open cron editor to add the above line.
@@ -568,16 +568,16 @@ b. Setup Matomo Tracking API to use a Redis https://matomo.org/faq/on-premise/ho
   7. Then setup a cronjob that executes the command ./console queuedtracking:process every minute, for example:
 
 ```
-* * * * * php /home/nginx/domains/ma.domain.com/public/console queuedtracking:process --no-ansi >/dev/null 2>&1
+* * * * * php /home/nginx/domains/u.domain.com/public/console queuedtracking:process --no-ansi >/dev/null 2>&1
 ```
 
 Then to check this is working, you can keep track of the queue and see how big it is by executing the command:
 
 ```
-/home/nginx/domains/ma.domain.com/public/console queuedtracking:monitor
+/home/nginx/domains/u.domain.com/public/console queuedtracking:monitor
 ```
 ```
-/home/nginx/domains/ma.domain.com/public/console queuedtracking:monitor
+/home/nginx/domains/u.domain.com/public/console queuedtracking:monitor
 Queue is enabled
 Request sets in the queue will be processed automatically after a tracking request
 Up to 2 workers will be used
@@ -595,11 +595,11 @@ As Matomo is installed on Nginx, some of the administration (`Diagnostic -> Syst
 Required Private Directories that are incorrectly reported as publicly available but are infact 403 permission denied using above Matomo Nginx rules.
 
 ```
-https://ma.domain.com/config/config.ini.php
-https://ma.domain.com/tmp/cache/tracker/matomocache_general.php
-https://ma.domain.com/tmp/
-https://ma.domain.com/tmp/empty
-https://ma.domain.com/lang/en.json
+https://u.domain.com/config/config.ini.php
+https://u.domain.com/tmp/cache/tracker/matomocache_general.php
+https://u.domain.com/tmp/
+https://u.domain.com/tmp/empty
+https://u.domain.com/lang/en.json
 ```
 
 And file integrity resports Centmin Mod's default Nginx vhost files which should be left available. At least `maintenance.html` should be left available to support Centmin Mod's 503 maintenance mode feature.
@@ -624,17 +624,17 @@ File to delete: maintenance.html
 Seems Matomo 5.1.0 isn't fully compatible with PHP 8.3 or at least a Matomo Plugin I installed isn't PHP 8.3 compatible. Seems to be related to Performance Audit Plugin compatibility https://github.com/matomo-org/matomo/issues/21775. The irony given what the plugin is meant for :) So will need to downgrade back to PHP 8.0.33 if I intend to use Performance Audit Plugin or deactive the plugin to use PHP 8.3.
 
 ```
-/home/nginx/domains/ma.domain.com/public/console queuedtracking:monitor                                             
-ERROR     [2024-08-05 09:53:01] 911986  Uncaught exception: TypeError: Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/ma.domain.com/public/core/Console.php on line 180 and defined in /home/nginx/domains/ma.domain.com/public/vendor/symfony/console/Application.php:592
+/home/nginx/domains/u.domain.com/public/console queuedtracking:monitor                                             
+ERROR     [2024-08-05 09:53:01] 911986  Uncaught exception: TypeError: Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/u.domain.com/public/core/Console.php on line 180 and defined in /home/nginx/domains/u.domain.com/public/vendor/symfony/console/Application.php:592
 Stack trace:
-#0 /home/nginx/domains/ma.domain.com/public/core/Console.php(180): Symfony\Component\Console\Application->has()
-#1 /home/nginx/domains/ma.domain.com/public/core/Console.php(138): Piwik\Console->addCommandIfExists()
-#2 /home/nginx/domains/ma.domain.com/public/core/Console.php(92): Piwik\Console->doRunImpl()
-#3 /home/nginx/domains/ma.domain.com/public/vendor/symfony/console/Application.php(171): Piwik\Console->doRun()
-#4 /home/nginx/domains/ma.domain.com/public/console(32): Symfony\Component\Console\Application->run()
+#0 /home/nginx/domains/u.domain.com/public/core/Console.php(180): Symfony\Component\Console\Application->has()
+#1 /home/nginx/domains/u.domain.com/public/core/Console.php(138): Piwik\Console->addCommandIfExists()
+#2 /home/nginx/domains/u.domain.com/public/core/Console.php(92): Piwik\Console->doRunImpl()
+#3 /home/nginx/domains/u.domain.com/public/vendor/symfony/console/Application.php(171): Piwik\Console->doRun()
+#4 /home/nginx/domains/u.domain.com/public/console(32): Symfony\Component\Console\Application->run()
 #5 {main}
-Uncaught exception in /home/nginx/domains/ma.domain.com/public/vendor/symfony/console/Application.php line 592:
-Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/ma.domain.com/public/core/Console.php on line 180
+Uncaught exception in /home/nginx/domains/u.domain.com/public/vendor/symfony/console/Application.php line 592:
+Symfony\Component\Console\Application::has(): Argument #1 ($name) must be of type string, null given, called in /home/nginx/domains/u.domain.com/public/core/Console.php on line 180
 ```
 
 Matomo system summary
