@@ -712,6 +712,71 @@ phpredisadmin screenshot for Matomo Analytics using Redis caching for QueuedTrac
 
 ![Matomo Redis & KeyDB Caching](screenshots/matomo-phpredisadmin-redis-keydb-unix-socket-01.png)
 
+Centmin Mod on AlmaLinux 9 - Redis
+
+```
+redis-cli -p 6379 info server
+
+# Server
+redis_version:7.2.5
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_build_id:ce975a21d248780e
+redis_mode:standalone
+os:Linux 5.14.0-427.24.1.el9_4.x86_64 x86_64
+arch_bits:64
+monotonic_clock:POSIX clock_gettime
+multiplexing_api:epoll
+atomicvar_api:c11-builtin
+gcc_version:11.4.1
+process_id:1386161
+process_supervised:systemd
+run_id:f04275bf0d30f80a3c3d664368b7a78f299e2725
+tcp_port:6379
+server_time_usec:1723059314485440
+uptime_in_seconds:23992
+uptime_in_days:0
+hz:10
+configured_hz:10
+lru_clock:11783282
+executable:/usr/bin/redis-server
+config_file:/etc/redis/redis.conf
+io_threads_active:0
+listener0:name=tcp,bind=127.0.0.1,bind=-::1,port=6379
+```
+
+Centmin Mod on AlmaLinux 9 - KeyDB
+
+```
+keydb-cli -s /run/keydb/keydb.sock info server
+
+# Server
+redis_version:6.3.4
+redis_git_sha1:7e7e5e57
+redis_git_dirty:1
+redis_build_id:e44e2f4345dcaa88
+redis_mode:standalone
+os:Linux 5.14.0-427.24.1.el9_4.x86_64 x86_64
+arch_bits:64
+multiplexing_api:epoll
+atomicvar_api:atomic-builtin
+gcc_version:12.2.1
+process_id:1399023
+process_supervised:systemd
+run_id:224c3c6aad5292b5cba9924dee0aef392c6f9f60
+tcp_port:0
+server_time_usec:1723059301661507
+uptime_in_seconds:2376
+uptime_in_days:0
+hz:10
+configured_hz:10
+lru_clock:11783269
+executable:/usr/local/bin/keydb-server
+config_file:/etc/keydb/keydb.conf
+availability_zone:
+features:cluster_mget
+```
+
 10. Notes
 
 As Matomo is installed on Nginx, some of the administration (`Diagnostic -> Systems Check`) settings report incorrectly that certain directories or files which are mean to be private are publicly accessible. But these directories and files are already handled by above Nginx vhost's Matomo Nginx rules to deny access.
