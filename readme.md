@@ -533,7 +533,83 @@ drwxr-sr-x 22 nginx nginx  321 Jun 10 07:48 vendor
 
 7. Setup Matomo
 
-Open your web browser and navigate to the URL to which you uploaded Matomo - `https://u.domain.com`. If everything is uploaded correctly, you should see the Matomo Installation Welcome Screen and proceed as outlined at
+Open your web browser and navigate to the URL to which you uploaded Matomo - `https://u.domain.com`. If everything is uploaded correctly, you should see the Matomo Installation Welcome Screen and proceed as outlined.
+
+The MariaDB MySQL database tables installed:
+
+```
+mysql -t -e "SELECT CONCAT(table_schema,'.',table_name) AS 'Table Name', CONCAT(ROUND(table_rows,2),' Rows') AS 'Number of Rows', ENGINE AS 'Storage Engine', CONCAT(ROUND(data_length/(1024*1024),2),'MB') AS 'Data Size', CONCAT(ROUND(index_length/(1024*1024),2),'MB') AS 'Index Size', CONCAT(ROUND((data_length+index_length)/(1024*1024),2),'MB') AS 'Total', ROW_FORMAT, TABLE_COLLATION FROM information_schema.TABLES WHERE table_schema LIKE 'matomodb' ORDER BY table_name;"
+
++-------------------------------------------------+----------------+----------------+-----------+------------+--------+------------+--------------------+
+| Table Name                                      | Number of Rows | Storage Engine | Data Size | Index Size | Total  | ROW_FORMAT | TABLE_COLLATION    |
++-------------------------------------------------+----------------+----------------+-----------+------------+--------+------------+--------------------+
+| matomodb.matomo_access                         | 1 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_alert                          | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_alert_site                     | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_alert_triggered                | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_01           | 198 Rows       | InnoDB         | 1.02MB    | 0.02MB     | 1.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_02           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_03           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_04           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_05           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_06           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_07           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_08           | 819 Rows       | InnoDB         | 2.02MB    | 0.06MB     | 2.08MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_blob_2024_09           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_invalidations          | 16 Rows        | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_01        | 123 Rows       | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_02        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_03        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_04        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_05        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_06        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_07        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_08        | 562 Rows       | InnoDB         | 0.11MB    | 0.11MB     | 0.22MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_archive_numeric_2024_09        | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_bot_db                         | 224 Rows       | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_bot_db_stat                    | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_bot_device_detector_bots       | 213 Rows       | InnoDB         | 0.06MB    | 0.00MB     | 0.06MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_bot_type                       | 13 Rows        | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_bot_visits                     | 266 Rows       | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_brute_force_log                | 2 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_changes                        | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_custom_dimensions              | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_goal                           | 2 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_locks                          | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_logger_message                 | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_action                     | 1616 Rows      | InnoDB         | 0.23MB    | 0.05MB     | 0.28MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_conversion                 | 2 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_conversion_item            | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_link_visit_action          | 2331 Rows      | InnoDB         | 0.23MB    | 0.19MB     | 0.42MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_performance                | 0 Rows         | InnoDB         | 0.02MB    | 0.08MB     | 0.09MB | Dynamic    | utf8mb3_general_ci |
+| matomodb.matomo_log_profiling                  | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_log_visit                      | 1457 Rows      | InnoDB         | 0.41MB    | 0.22MB     | 0.63MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_option                         | 282 Rows       | InnoDB         | 0.22MB    | 0.02MB     | 0.23MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_plugin_setting                 | 23 Rows        | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_privacy_logdata_anonymizations | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_queuedtracking_queue           | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_report                         | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_report_subscriptions           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_segment                        | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_sequence                       | 9 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_session                        | 175 Rows       | InnoDB         | 0.22MB    | 0.00MB     | 0.22MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_site                           | 4 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_site_setting                   | 12 Rows        | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_site_url                       | 2 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_container           | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_container_release   | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_container_version   | 0 Rows         | InnoDB         | 0.02MB    | 0.03MB     | 0.05MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_tag                 | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_trigger             | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tagmanager_variable            | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_tracking_failure               | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_twofactor_recovery_code        | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_user                           | 3 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_user_dashboard                 | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_user_language                  | 0 Rows         | InnoDB         | 0.02MB    | 0.00MB     | 0.02MB | Dynamic    | utf8mb4_general_ci |
+| matomodb.matomo_user_token_auth                | 0 Rows         | InnoDB         | 0.02MB    | 0.02MB     | 0.03MB | Dynamic    | utf8mb4_general_ci |
++-------------------------------------------------+----------------+----------------+-----------+------------+--------+------------+--------------------+
+```
 
 8. Setup Matomo set up auto-archiving cron task
 
@@ -587,6 +663,54 @@ Processor will start once there are at least 50 request sets in the queue
 
 This will show the current state of the queue. In traffic peak time the queue will grow 1,000 or 10,000 requests or more, but usually the queue should be around 0-150 requests.
 
+To view the next requests to process in each queue
+
+```
+/home/nginx/domains/u.domain.com/public/console queuedtracking:print-queued-requests
+```
+
+c. Using Redis or KeyDB caching
+
+Besides using Redis server caching for Matomo QueuedTracking plugin, we can optionally also enable Redis or KeyDB server caching for Matomo itself https://matomo.org/faq/how-to/faq_20511/. The documentation recommends using a separate Redis server instance from the above QueuedTracking plugin's defined Redis server instance.
+
+For Redis server which Centmin Mod LEMP stack installs by default - changing database number to desired database i.e. `0` and Redis server listening on `127.0.0.1` on port `6379` with empty Redis server password:
+
+```
+[Cache]
+backend = chained
+
+[ChainedCache]
+backends[] = array
+backends[] = redis
+
+[RedisCache]
+host = "127.0.0.1" 
+port = 6379
+timeout = 1.5
+password = ""
+database = 0
+```
+
+However, as documentation recommends a separate Redis server instance, I opted to install faster performance fork [KeyDB](https://docs.keydb.dev/) server caching that I benchmarked - [redis vs keydb vs dragonfly](https://github.com/centminmod/redis-comparison-benchmarks). The KeyDB server installed defaults to listening on `127.0.0.1` on port `7379` but switched it to run on a Unix socket `/run/keydb/keydb.sock`. While AlmaLinux/Rocky Rocky EL8/E9 have KeyDB YUM package in EPEL release YUM repo, it will conflict with Redis installed YUM repo package so you can only choose either Redis or KeyDB usually. So I decided to custom compile KeyDB server so it can run side by side with default Redis server and adhere to Matomo's recommendations for separate caching server instances. 
+
+Same backend defined as chained with `array` and `redis` backend as KeyDB is a Redis fork. And defined a KeyDB Unix socket file configuration
+
+```
+[ChainedCache]
+backends[] = "array"
+backends[] = "redis"
+
+[RedisCache]
+port =  0
+database = 0
+unix_socket = "/run/keydb/keydb.sock"
+timeout = "1.5"
+password = ""
+```
+
+phpredisadmin screenshot for Matomo Analytics using Redis caching for QueuedTracking plugin and KeyDB caching for Matomo.
+
+![Matomo Redis & KeyDB Caching](screenshots/matomo-phpredisadmin-redis-keydb-unix-socket-01.png)
 
 10. Notes
 
