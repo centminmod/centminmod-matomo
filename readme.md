@@ -673,7 +673,7 @@ c. Using Redis or KeyDB caching
 
 Besides using Redis server caching for Matomo QueuedTracking plugin, we can optionally also enable Redis or KeyDB server caching for Matomo itself https://matomo.org/faq/how-to/faq_20511/. The documentation recommends using a separate Redis server instance from the above QueuedTracking plugin's defined Redis server instance.
 
-For Redis server which Centmin Mod LEMP stack installs by default - changing database number to desired database i.e. `0` and Redis server listening on `127.0.0.1` on port `6379` with empty Redis server password:
+For Redis server which Centmin Mod LEMP stack installs by default - changing database number to desired database i.e. `0` and Redis server listening on `127.0.0.1` on port `6379` with empty Redis server password added to `/home/nginx/domains/u.domain.com/public/config/config.ini.php`:
 
 ```
 [Cache]
@@ -693,7 +693,7 @@ database = 0
 
 However, as documentation recommends a separate Redis server instance, I opted to install faster performance fork [KeyDB](https://docs.keydb.dev/) server caching that I benchmarked - [redis vs keydb vs dragonfly](https://github.com/centminmod/redis-comparison-benchmarks). The KeyDB server installed defaults to listening on `127.0.0.1` on port `7379` but switched it to run on a Unix socket `/run/keydb/keydb.sock`. While AlmaLinux/Rocky Rocky EL8/E9 have KeyDB YUM package in EPEL release YUM repo, it will conflict with Redis installed YUM repo package so you can only choose either Redis or KeyDB usually. So I decided to custom compile KeyDB server so it can run side by side with default Redis server and adhere to Matomo's recommendations for separate caching server instances. 
 
-Same backend defined as chained with `array` and `redis` backend as KeyDB is a Redis fork. And defined a KeyDB Unix socket file configuration
+Same backend defined as chained with `array` and `redis` backend as KeyDB is a Redis fork. And defined a KeyDB Unix socket file configuration added to `/home/nginx/domains/u.domain.com/public/config/config.ini.php`
 
 ```
 [ChainedCache]
