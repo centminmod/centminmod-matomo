@@ -26,12 +26,97 @@ For Matomo, start with at least 2 to 4 CPU cores and 4-8GB memory with 4GB swap 
 
 For Centmin Mod some recommended and tested web hosts for VPS and dedicated servers include:
 
-* [Hetzner](https://centminmod.com/hetzner/) - below example was installed on Hetzner Cloud dedicated CPU VPS instance - 4x CPU, 16GB memory and 160GB disk storage.
+* [Hetzner](https://centminmod.com/hetzner/) - below example was installed on Hetzner Cloud dedicated AMD CPU VPS instance - 4x CPU, 16GB memory and 160GB disk storage.
 * [Upcloud](https://centminmod.com/upcloud/)
 * [Linode](https://centminmod.com/linode/)
 * [Vultr](https://centminmod.com/vultr/)
 * [DigitalOcean](https://centminmod.com/digitalocean/)
 * [Hivelocity](https://centminmod.com/hivelocity/)
+
+Below example install on [Hetzner Cloud](https://centminmod.com/hetzner/) dedicated AMD CPU VPS server running Centmin Mod 140.00beta01 on AlmaLinux 9.4.
+
+```
+cat /etc/centminmod-release 
+140.00beta01.b085
+```
+```
+cat /etc/os-release 
+NAME="AlmaLinux"
+VERSION="9.4 (Seafoam Ocelot)"
+ID="almalinux"
+ID_LIKE="rhel centos fedora"
+VERSION_ID="9.4"
+PLATFORM_ID="platform:el9"
+PRETTY_NAME="AlmaLinux 9.4 (Seafoam Ocelot)"
+ANSI_COLOR="0;34"
+LOGO="fedora-logo-icon"
+CPE_NAME="cpe:/o:almalinux:almalinux:9::baseos"
+HOME_URL="https://almalinux.org/"
+DOCUMENTATION_URL="https://wiki.almalinux.org/"
+BUG_REPORT_URL="https://bugs.almalinux.org/"
+
+ALMALINUX_MANTISBT_PROJECT="AlmaLinux-9"
+ALMALINUX_MANTISBT_PROJECT_VERSION="9.4"
+REDHAT_SUPPORT_PRODUCT="AlmaLinux"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.4"
+SUPPORT_END=2032-06-01
+```
+```
+lscpu
+Architecture:            x86_64
+  CPU op-mode(s):        32-bit, 64-bit
+  Address sizes:         40 bits physical, 48 bits virtual
+  Byte Order:            Little Endian
+CPU(s):                  4
+  On-line CPU(s) list:   0-3
+Vendor ID:               AuthenticAMD
+  BIOS Vendor ID:        QEMU
+  Model name:            AMD EPYC-Milan Processor
+    BIOS Model name:     NotSpecified
+    CPU family:          25
+    Model:               1
+    Thread(s) per core:  2
+    Core(s) per socket:  2
+    Socket(s):           1
+    Stepping:            1
+    BogoMIPS:            4890.80
+    Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdt
+                         scp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16
+                         c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcal
+                         l fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr wbnoinv
+                         d arat umip pku ospke rdpid fsrm
+Virtualization features: 
+  Hypervisor vendor:     KVM
+  Virtualization type:   full
+Caches (sum of all):     
+  L1d:                   64 KiB (2 instances)
+  L1i:                   64 KiB (2 instances)
+  L2:                    1 MiB (2 instances)
+  L3:                    32 MiB (1 instance)
+NUMA:                    
+  NUMA node(s):          1
+  NUMA node0 CPU(s):     0-3
+```
+```
+free -mlt
+               total        used        free      shared  buff/cache   available
+Mem:           15355        3894        4664         176        7296       11460
+Low:           15355       10690        4664
+High:              0           0           0
+Swap:           4095           0        4095
+Total:         19451        3894        8760
+```
+```
+df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  4.0M     0  4.0M   0% /dev
+tmpfs          tmpfs     7.5G     0  7.5G   0% /dev/shm
+tmpfs          tmpfs     3.0G   94M  3.0G   4% /run
+/dev/sda1      ext4      151G   15G  130G  10% /
+/dev/sda14     vfat       64M  7.1M   57M  12% /boot/efi
+tmpfs          tmpfs     1.5G     0  1.5G   0% /run/user/0
+tmpfs          tmpfs     7.5G  588K  7.5G   1% /tmp
+```
 
 ## Prepare
 
