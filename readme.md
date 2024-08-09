@@ -20,6 +20,8 @@ For Centmin Mod some recommended and tested web hosts for VPS and dedicated serv
 * [DigitalOcean](https://centminmod.com/digitalocean/)
 * [Hivelocity](https://centminmod.com/hivelocity/)
 
+## Prepare
+
 1. Prepare your intended domain name or subdomain's DNS and Matomo MariaDB MySQL database name, user and password and Maxmind geolocation database license registration. Below guide will use 
 
 * subdomain hostname = `u.domain.com` 
@@ -116,6 +118,8 @@ Install dependencies
 yum -y install alsa-lib.x86_64 atk.x86_64 cups-libs.x86_64 gtk3.x86_64 ipa-gothic-fonts libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXrandr.x86_64 libXScrnSaver.x86_64 libXtst.x86_64 pango.x86_64 xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-fonts-cyrillic xorg-x11-fonts-misc xorg-x11-fonts-Type1 xorg-x11-utils --skip-broken
 ```
 
+## Letsencrypt Setup
+
 2. Ensure you have Letsencrypt integration and Nginx GeoIP 2 Lite Nginx module support enabled by setting up in Centmin Mod persistent config file `/etc/centminmod/custom_config.inc` the variables for:
 
 ```
@@ -144,6 +148,8 @@ CF_DNSAPI_GLOBAL='y'
 CF_Token="YOUR_CF_TOKEN"
 CF_Account_ID="YOUR_CF_ACCOUNT_ID"
 ```
+
+## Update Nginx
 
 3. Update Nginx to 1.27.0 via centmin.sh menu option 4
 
@@ -204,6 +210,8 @@ built with OpenSSL 1.1.1k  FIPS 25 Mar 2021
 TLS SNI support enabled
 ```
 > configure arguments: --with-ld-opt='-Wl,-E -L/usr/local/zlib-cf/lib -L/usr/local/nginx-dep/lib -ljemalloc -Wl,-z,relro,-z,now -Wl,-rpath,/usr/local/zlib-cf/lib:/usr/local/nginx-dep/lib -pie -flto=2 -flto-compression-level=1 -fuse-ld=gold' --with-cc-opt='-I/usr/local/zlib-cf/include -I/usr/local/nginx-dep/include -m64 -march=native -fPIC -g -O3 -fstack-protector-strong -flto=2 -flto-compression-level=1 -fuse-ld=gold --param=ssp-buffer-size=4 -Wformat -Wno-pointer-sign -Wimplicit-fallthrough=0 -Wno-cast-align -Wno-implicit-function-declaration -Wno-builtin-declaration-mismatch -Wno-deprecated-declarations -Wno-int-conversion -Wno-unused-result -Wno-vla-parameter -Wno-maybe-uninitialized -Wno-return-local-addr -Wno-array-parameter -Wno-alloc-size-larger-than -Wno-address -Wno-array-bounds -Wno-discarded-qualifiers -Wno-stringop-overread -Wno-stringop-truncation -Wno-missing-field-initializers -Wno-unused-variable -Wno-format -Wno-error=unused-result -Wno-missing-profile -Wno-stringop-overflow -Wno-free-nonheap-object -Wno-discarded-qualifiers -Wno-bad-function-cast -Wno-dangling-pointer -Wno-array-parameter -fcode-hoisting -Wno-cast-function-type -Wno-format-extra-args -Wp,-D_FORTIFY_SOURCE=2' --prefix=/usr/local/nginx --sbin-path=/usr/local/sbin/nginx --conf-path=/usr/local/nginx/conf/nginx.conf --build=040824-141522-almalinux8-kvm-da33abe-br-a71f931 --with-compat --without-pcre2 --with-http_stub_status_module --with-http_secure_link_module --with-libatomic --with-http_gzip_static_module --add-dynamic-module=../ngx_brotli --add-module=../zstd-nginx-module --add-dynamic-module=../ngx_http_geoip2_module --with-http_sub_module --with-http_addition_module --with-http_image_filter_module=dynamic --with-http_geoip_module --with-stream_geoip_module --with-stream_realip_module --with-stream_ssl_preread_module --with-threads --with-stream --with-stream_ssl_module --with-http_realip_module --add-dynamic-module=../ngx-fancyindex-0.4.2 --add-module=../ngx_cache_purge-2.5.3 --add-dynamic-module=../ngx_devel_kit-0.3.2 --add-dynamic-module=../set-misc-nginx-module-0.33 --add-dynamic-module=../echo-nginx-module-0.63 --add-module=../redis2-nginx-module-0.15 --add-module=../ngx_http_redis-0.4.0-cmm --add-module=../memc-nginx-module-0.20 --add-module=../srcache-nginx-module-0.33 --add-dynamic-module=../headers-more-nginx-module-0.37 --with-pcre-jit --with-zlib=../zlib-cloudflare-1.3.3 --with-zlib-opt=-fPIC --with-http_ssl_module --with-http_v2_module
+
+## Create Nginx Vhost Site
 
 4. Create Centmin Mod Nginx Vhost with HTTPS Letsencrypt SSL certificate support using Centmin Mod `nv` command line tool (you can also use centmin.sh menu option 2 shell menu for interactive creation) as outlined at https://centminmod.com/nginx_domain_dns_setup.html:
 
@@ -297,6 +305,8 @@ Then you'll be able to type:
 * `myconf` to launch nano text editor to edit Nginx vhost config file
 * `mylog` to change into Nginx vhost's log directory using pushd command
 * `mypub` to change into Nginx vhost's public web root directory
+
+## Update Nginx Vhost Site Matomo Rules
 
 5. Update Centmin Mod Nginx vhost config file `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf` for Matomo nginx rules
 
@@ -485,6 +495,8 @@ or
 systemctl restart php-fpm
 ```
 
+## Install Matomo
+
 6. Install Matomo
 
 Install Matomo as per guide at https://matomo.org/faq/on-premise/installing-matomo/.
@@ -550,6 +562,8 @@ drwxr-sr-x  2 nginx nginx   23 Jun 10 07:48 tests
 drwxr-sr-x  2 nginx nginx    6 Jun 10 07:48 tmp
 drwxr-sr-x 22 nginx nginx  321 Jun 10 07:48 vendor
 ```
+
+## Setup Matomo
 
 7. Setup Matomo
 
@@ -631,6 +645,8 @@ mysql -t -e "SELECT CONCAT(table_schema,'.',table_name) AS 'Table Name', CONCAT(
 +-------------------------------------------------+----------------+----------------+-----------+------------+--------+------------+--------------------+
 ```
 
+## Setup Matomo Auto-Archiving Cron Task
+
 8. Setup Matomo set up auto-archiving cron task
 
 Setup Matomo set up auto-archiving cron task as per https://matomo.org/docs/setup-auto-archiving/ with the path to your console at `/home/nginx/domains/u.domain.com/public/console` and url to `https://u.domain.com` install location
@@ -641,7 +657,11 @@ Setup Matomo set up auto-archiving cron task as per https://matomo.org/docs/setu
 
 You can use `crontab -e` command to open cron editor to add the above line.
 
+## Matomo Optimizations
+
 9. Optimizations
+
+### a.
 
 a. Disable browser triggers for Matomo archiving and limit Matomo reports to updating every hour
 
@@ -652,6 +672,7 @@ After you have set up the automatic archive script as explained above, you can s
 
 Click save to save your changes
 
+### b.
 
 b. Setup Matomo Tracking API to use a Redis https://matomo.org/faq/on-premise/how-to-configure-matomo-to-handle-unexpected-peak-in-traffic/. Centmin Mod LEMP stack automatically installs Redis server out of the box listening on `127.0.0.1` with port `6379` with up to 15 databases available for databases 0 to 14.
 
@@ -688,6 +709,8 @@ To view the next requests to process in each queue
 ```
 /home/nginx/domains/u.domain.com/public/console queuedtracking:print-queued-requests
 ```
+
+### c.
 
 c. Using Redis or KeyDB caching
 
@@ -797,7 +820,9 @@ availability_zone:
 features:cluster_mget
 ```
 
-10. Notes
+## Matomo Notes
+
+10. Matomo Notes
 
 As Matomo is installed on Nginx, some of the administration (`Diagnostic -> Systems Check`) settings report incorrectly that certain directories or files which are mean to be private are publicly accessible. But these directories and files are already handled by above Nginx vhost's Matomo Nginx rules to deny access.
 
@@ -853,6 +878,8 @@ Matomo version: 5.1.0
 MySQL version: 10.11.8-MariaDB
 PHP version: 8.3.10
 ```
+
+## Matomo Console
 
 11. Matomo Console
 
