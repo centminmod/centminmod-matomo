@@ -1,5 +1,25 @@
 # Centmin Mod Matomo Installation Guide
 
+## Requirements
+
+Matomo and Centmin Mod both have their respective system requirements. For Centmin Mod LEMP stack, recommended would be at least 4GB memory and 4GB swap disk with AlmaLinux or Rocky Linux version 8 or 9 on x86_64 (non-Arm based) servers. 
+
+For Matomo, I would start with at least 2 to 4 CPU cores and 4-8GB memory with 4GB swap disk and at least 150-200GB of disk space.
+
+* https://matomo.org/faq/on-premise/matomo-requirements/
+* https://centminmod.com/install.html
+
+## Web Hosting
+
+For Centmin Mod some recommended and tested web hosts for VPS and dedicated servers include:
+
+* [Hetzner](https://centminmod.com/hetzner/) - below example was installed on Hetzner Cloud dedicated CPU VPS instance - 4x CPU, 16GB memory and 160GB disk storage.
+* [Upcloud](https://centminmod.com/upcloud/)
+* [Linode](https://centminmod.com/linode/)
+* [Vultr](https://centminmod.com/vultr/)
+* [DigitalOcean](https://centminmod.com/digitalocean/)
+* [Hivelocity](https://centminmod.com/hivelocity/)
+
 1. Prepare your intended domain name or subdomain's DNS and Matomo MariaDB MySQL database name, user and password and Maxmind geolocation database license registration. Below guide will use 
 
 * subdomain hostname = `u.domain.com` 
@@ -832,4 +852,110 @@ Matomo system summary
 Matomo version: 5.1.0
 MySQL version: 10.11.8-MariaDB
 PHP version: 8.3.10
+```
+
+11. Matomo Console
+
+Matomo console options outlined at https://developer.matomo.org/guides/piwik-on-the-command-line
+
+```
+/home/nginx/domains/u.domain.com/public/console list
+
+Matomo 5.1.0
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help                           Display help for the given command. When no command is given display help for the list command
+  -q, --quiet                          Do not output any message
+  -V, --version                        Display this application version
+      --ansi|--no-ansi                 Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction                 Do not ask any interactive question
+      --matomo-domain[=MATOMO-DOMAIN]  Matomo URL (protocol and domain) eg. "http://matomo.example.org"
+      --xhprof                         Enable profiling with XHProf
+      --ignore-warn                    Return 0 exit code even if there are warning logs or error logs detected in the command output.
+  -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  completion                                     Dump the shell completion script
+  help                                           Display help for a command
+  list                                           List commands
+ bottracker
+  bottracker:add-bot                             Add new bot.
+  bottracker:add-bot-type                        Add new bot type.
+  bottracker:add-default-bots                    Add default bots.
+  bottracker:delete-bot                          Deletes a bot.
+  bottracker:list-bot-types                      List bot types added.
+  bottracker:list-bots                           List bots for site id.
+ climulti
+  climulti:request                               Parses and executes the given query. See Piwik\CliMulti. Intended only for system usage.
+ config
+  config:delete                                  Delete a config setting
+  config:get                                     Get a config value or section
+  config:set                                     Set one or more config settings in the file config/config.ini.php
+ core
+  core:archive                                   Runs the CLI archiver. It is an important tool for general maintenance and to keep Piwik very fast.
+  core:calculate-conversion-pages                Calculate the pages before metric for historic conversions
+  core:clear-caches                              [cache:clear] Clears all caches. This command can be useful for instance after updating Matomo files manually.
+  core:create-security-files                     Creates some web server security files if they haven't existed previously. Useful when using for example Apache or IIS web server and Matomo cannot create these files automatically because of missing write permissions.
+  core:delete-logs-data                          Delete data from the user log tables: log_visit, log_link_visit_action, log_conversion, log_conversion_item, log_action.
+  core:fix-duplicate-log-actions                 Removes duplicates in the log action table and fixes references to the duplicates in related tables. NOTE: This action can take a long time to run!
+  core:invalidate-report-data                    Invalidate archived report data by date range, site and period.
+  core:matomo4-migrate-token-auths               Only needed for the matomo 3 to matomo 4 migration
+  core:purge-old-archive-data                    Purges out of date and invalid archive data from archive tables.
+  core:test-email                                Send a test email
+  core:update                                    Triggers upgrades. Use it after Matomo core or any plugin files have been updated. Append --yes to upgrade without confirmation.
+  core:version                                   Returns the current version information of this Matomo instance.
+ custom-piwik-js
+  custom-piwik-js:update                         [custom-matomo-js:update] Update the Javascript Tracker with plugin tracker additions
+ customdimensions
+  customdimensions:add-custom-dimension          Add new Custom Dimension available.
+  customdimensions:info                          Get information about currently installed Custom Dimensions
+  customdimensions:remove-custom-dimension       Removes an existing Custom Dimension
+ database
+  database:optimize-archive-tables               Runs an OPTIMIZE TABLE query on the specified archive tables.
+ development
+  development:enable                             [development:disable] Enable or disable development mode. See config/global.ini.php in section [Development] for more information
+ device-detector-cache
+  device-detector-cache:warm-cache               Cached device detector information based on access log
+ diagnostics
+  diagnostics:analyze-archive-table              Analyze an archive table and display human readable information about what is stored. This command can be used to diagnose issues like bloated archive tables.
+  diagnostics:archiving-config                   Show configuration settings that can affect archiving performance
+  diagnostics:archiving-instance-statistics      Show data statistics which can affect archiving performance
+  diagnostics:archiving-metrics                  Show metrics describing the current archiving status
+  diagnostics:archiving-queue                    Show the current state of the archive invalidations queue as a table
+  diagnostics:archiving-status                   
+  diagnostics:run                                Run diagnostics to check that Piwik is installed and runs correctly
+  diagnostics:unexpected-files                   Show a list of unexpected files found in the Matomo installation directory and optionally delete them.
+ googleanalyticsimporter
+  googleanalyticsimporter:archive-imported-data  Initiates core:archive for an imported site. This is run automatically every day, but can be run manually if needed. All it really does is call core:archive w/ a few custom parameters so data from years back gets archived.
+  googleanalyticsimporter:import-ga4-reports     Import GA4 reports from one or more google analytics properties into Matomo sites.
+  googleanalyticsimporter:import-reports         Import reports from one or more google analytics properties into Matomo sites.
+ log
+  log:watch                                      Outputs the last parts of the log files and follows as the log file grows. Does not work on Windows
+ login
+  login:unblock-blocked-ips                      Unblocks all currently blocked IPs. Useful if you cannot log in to your Matomo anymore because your own IP is blocked
+ marketplace
+  marketplace:set-license-key                    Sets a marketplace license key
+ plugin
+  plugin:activate                                Activate a plugin.
+  plugin:deactivate                              Deactivate a plugin.
+  plugin:list                                    List installed plugins.
+  plugin:uninstall                               Uninstall a plugin.
+ privacymanager
+  privacymanager:anonymize-some-raw-data         Anonymize some of the stored raw data (logs). The reason it only anonymizes "some" data is that personal data can be present in many various data collection points, for example some of your page URLs or page titles may include personal data and these will not be anonymized by this command as it is not possible to detect personal data for example in a URL automatically.
+ queuedtracking
+  queuedtracking:lock-status                     Outputs information for the status of each locked queue. Unlocking a queue is possible as well.
+  queuedtracking:monitor                         Shows and updates the current state of the queue every 2 seconds.
+  queuedtracking:print-queued-requests           Prints the requests of each queue that will be processed next.
+  queuedtracking:process                         Processes all queued tracking requests in case there are enough requests in the queue and in case they are not already in process by another script. To keep track of the queue use the --verbose option or execute the queuedtracking:monitor command.
+  queuedtracking:test                            Test your Redis connection get some information about your current system.
+ scheduled-tasks
+  scheduled-tasks:run                            [core:run-scheduled-tasks] Will run all scheduled tasks due to run at this time.
+ twofactorauth
+  twofactorauth:disable-2fa-for-user             Disable two-factor authentication for a user. Useful if a user loses the device that was used for two-factor authentication. After it was disabled, the user will be able to set it up again.
+ usercountry
+  usercountry:attribute                          Re-attribute existing raw data (visits & conversions) with geolocated location data, using the specified or configured location provider.
+  usercountry:convert-region-codes               Convert FIPS region codes saved by GeoIP legacy provider to ISO.
 ```
