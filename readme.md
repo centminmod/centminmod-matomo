@@ -1,10 +1,23 @@
 # Centmin Mod Matomo Installation Guide
 
+* [Requirements](#requirements)
+* [Web Hosting](#web-hosting)
+* [Prepare](#prepare)
+* [Letsencrypt Setup](#letsencrypt-setup)
+* [Update Nginx](#update-nginx)
+* [Create Nginx Vhost Site](#create-nginx-vhost-site)
+* [Update Nginx Vhost Site Matomo Rules](#update-nginx-vhost-site-matomo-rules)
+* [Install Matomo](#install-matomo)
+* [Setup Matomo](#setup-matomo)
+* [Setup Matomo Auto-Archiving Cron Task](#setup-matomo-auto-archiving-cron-task)
+* [Matomo Optimizations](#matomo-optimizations)
+* [Matomo Notes](#matomo-notes)
+
 ## Requirements
 
 Matomo and Centmin Mod both have their respective system requirements. For Centmin Mod LEMP stack, recommended would be at least 4GB memory and 4GB swap disk with AlmaLinux or Rocky Linux version 8 or 9 on x86_64 (non-Arm based) servers. 
 
-For Matomo, I would start with at least 2 to 4 CPU cores and 4-8GB memory with 4GB swap disk and at least 150-200GB of disk space.
+For Matomo, start with at least 2 to 4 CPU cores and 4-8GB memory with 4GB swap disk and at least 150-200GB of disk space. Read the relevant link for Matomo recommended requirements based on traffic.
 
 * https://matomo.org/faq/on-premise/matomo-requirements/
 * https://centminmod.com/install.html
