@@ -698,6 +698,40 @@ server {
 }
 ```
 
+The generated free Letsencrypt SSL certificates are referenced in the Nginx vhost's `/usr/local/nginx/conf/ssl/u.domain.com/u.domain.com.crt.key.conf` include file:
+
+```
+  ssl_dhparam /usr/local/nginx/conf/ssl/u.domain.com/dhparam.pem;
+  ssl_certificate      /usr/local/nginx/conf/ssl/u.domain.com/u.domain.com-acme.cer;
+  ssl_certificate_key  /usr/local/nginx/conf/ssl/u.domain.com/u.domain.com-acme.key;
+  ssl_trusted_certificate /usr/local/nginx/conf/ssl/u.domain.com/u.domain.com-acme.cer; 
+```
+
+You can use Centmin Mod's `addons/acmetool.sh` script's `checkdate` option to inspect which Letsencrypt SSL certificates have been issued and installed on your server as well as the domain validation method used and the Letsencrypt SSL certfificates expiry date. It shows where Letsencrypt SSL certificate was issued `/root/.acme.sh/u.domain.com/u.domain.com.cer` and where it was installed for Centmin Mod Nginx `/usr/local/nginx/conf/ssl/u.domain.com/u.domain.com-acme.cer` and a link to `crt.sh` certificate transparency log entry. The Letsencrypt SSL certificates are automatically renewed every 60 days via cronjob.
+
+```
+/usr/local/src/centminmod/addons/acmetool.sh checkdates
+
+----------------------------------------------
+nginx installed
+----------------------------------------------
+
+/usr/local/nginx/conf/ssl/u.domain.com/u.domain.com-acme.cer
+SHA1 Fingerprint=C3046EA21XXXXXXXXXE1A87E31EXXXXXXX
+certificate expires in 84 days on 3 Nov 2024
+
+----------------------------------------------
+acme.sh obtained
+----------------------------------------------
+
+/root/.acme.sh/u.domain.com/u.domain.com.cer
+SHA1 Fingerprint=C3046EA21XXXXXXXXXE1A87E31EXXXXXXX
+[ below certifcate transparency link is only valid ~1hr after issuance ]
+https://crt.sh/?sha1=C3046EA21XXXXXXXXXE1A87E31EXXXXXXX
+certificate expires in 84 days on 3 Nov 2024
+Letsencrypt validation method: Le_Webroot='dns_cf'
+```
+
 ### Cloudflare Full SSL
 
 If you run Cloudflare orange cloud enabled proxy in front of Matomo site and have set Cloudflare Full/Full Strict SSL and set Cloudflare to always redirect to HTTPS, you may need to comment out the Centmin Mod Nginx non-HTTPS port 80 to HTTPS port 443 redirect `server{}` context
