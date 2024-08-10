@@ -429,7 +429,7 @@ Edit your Nginx vhost config file at `/usr/local/nginx/conf/conf.d/u.domain.com.
   }
 ```
 
-with the below content
+with the below content - keeping `/usr/local/nginx/conf/503include-only.conf` include file to support [Centmin Mod's 503 sitestatus maintenance HTML mode](https://community.centminmod.com/threads/sitestatus-maintenance-mode.5599/). These Matomo Nginx rules are a modification of Matomo's Nginx rules https://github.com/matomo-org/matomo-nginx/blob/master/sites-available/matomo.conf made for Centmin Mod Nginx.
 
 ```
 # Matomo Stuff
@@ -494,7 +494,23 @@ with the below content
   }
 ```
 
-Optionally, you can enable Centmin Mod Nginx JSON formatted access logs for easier parsing of access logs by uncommenting the additional `access_log` line in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`.
+The difference between Centmin Mod's Matomo Nginx rules and Matomo's defaults is removal of the PHP location context match for
+
+```
+    ## deny access to all other .php files
+    location ~* ^.+\.php$ {
+        deny all;
+        return 403;
+    }
+```
+
+Centmin Mod LEMP stack Nginx vhost's do not need the PHP location context match as it includes with each created Nginx vhost and include file `/usr/local/nginx/conf/php.conf` that you can use in it's place.
+
+```
+  include /usr/local/nginx/conf/php.conf;
+```
+
+Optionally, you can [enable Centmin Mod Nginx JSON formatted access logs](https://community.centminmod.com/threads/how-to-configure-nginx-for-json-based-access-logging.19641/) for easier parsing of access logs by uncommenting the additional `access_log` line in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`.
 
 Change from
 
@@ -540,6 +556,176 @@ and also comment out Centmin Mod Nginx autoprotect include file `/usr/local/ngin
 
 ```
   #include /usr/local/nginx/conf/autoprotect/u.domain.com/autoprotect-u.domain.com.conf;
+```
+
+Example for the full Centmin Mod Nginx vhost for Matomo created site behind Cloudflare orange cloud proxy with Cloudflare Flexible SSL ([note for Cloudflare Full/Full Strict SSL modes](#cloudflare-full-ssl)) at `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf`:
+
+```
+#x# HTTPS-DEFAULT
+ server {
+   listen   80;
+   #x#   listen   [::]:80;
+   server_name u.domain.com.com www.u.domain.com.com;
+   return 302 https://u.domain.com.com$request_uri;
+   root /home/nginx/domains/u.domain.com.com/public;
+   include /usr/local/nginx/conf/staticfiles.conf;
+ }
+
+
+server {
+  listen 443 ssl;
+  listen   [::]:443 ssl;
+  http2 on;
+  server_name u.domain.com.com www.u.domain.com.com;
+
+  include /usr/local/nginx/conf/ssl/u.domain.com.com/u.domain.com.com.crt.key.conf;
+  include /usr/local/nginx/conf/ssl_include.conf;
+
+  # cloudflare authenticated origin pull cert community.centminmod.com/threads/13847/
+  #ssl_client_certificate /usr/local/nginx/conf/ssl/cloudflare/u.domain.com.com/origin.crt;
+  #ssl_verify_client on;
+    
+  # mozilla recommended
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  ssl_prefer_server_ciphers   on;
+  #add_header Alternate-Protocol  443:npn-spdy/3;
+
+  # before enabling HSTS line below read centminmod.com/nginx_domain_dns_setup.html#hsts
+  #add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+  #add_header X-Frame-Options SAMEORIGIN;
+  add_header X-Xss-Protection "1; mode=block" always;
+  add_header X-Content-Type-Options "nosniff" always;
+  #add_header Referrer-Policy "strict-origin-when-cross-origin";
+  #add_header Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+  #spdy_headers_comp 5;
+  ssl_buffer_size 1369;
+  ssl_session_tickets on;
+  
+  # enable ocsp stapling
+  resolver 8.8.8.8 8.8.4.4 1.1.1.1 1.0.0.1 valid=10m;
+  resolver_timeout 10s;
+  ssl_stapling on;
+  ssl_stapling_verify on;
+
+# ngx_pagespeed & ngx_pagespeed handler
+#include /usr/local/nginx/conf/pagespeed.conf;
+#include /usr/local/nginx/conf/pagespeedhandler.conf;
+#include /usr/local/nginx/conf/pagespeedstatslog.conf;
+
+  # limit_conn limit_per_ip 16;
+  # ssi  on;
+
+  access_log /home/nginx/domains/u.domain.com.com/log/access.log combined buffer=256k flush=5m;
+  access_log /home/nginx/domains/u.domain.com.com/log/access.json main_json buffer=256k flush=5m;
+  error_log /home/nginx/domains/u.domain.com.com/log/error.log;
+
+  #include /usr/local/nginx/conf/autoprotect/u.domain.com.com/autoprotect-u.domain.com.com.conf;
+  root /home/nginx/domains/u.domain.com.com/public;
+  # uncomment cloudflare.conf include if using cloudflare for
+  # server and/or vhost site
+  include /usr/local/nginx/conf/cloudflare.conf;
+  include /usr/local/nginx/conf/503include-main.conf;
+
+  # Matomo Stuff
+  # https://github.com/matomo-org/matomo-nginx/blob/master/sites-available/matomo.conf
+  add_header Referrer-Policy origin always; # make sure outgoing links don't show the URL to the Matomo instance
+
+  ## only allow accessing the following php files
+  location ~ ^/(index|matomo|piwik|js/index|plugins/HeatmapSessionRecording/configs)\.php$ {
+    include /usr/local/nginx/conf/php.conf; # we have to include this again here inside of this location block
+    try_files $fastcgi_script_name =404; # protects against CVE-2019-11043. If this line is already included in your snippets/fastcgi-php.conf you can comment it here.
+    fastcgi_param HTTP_PROXY ""; # prohibit httpoxy: https://httpoxy.org/
+  }
+
+  # LOCATION DIRECTIVES
+  location / {
+    include /usr/local/nginx/conf/503include-only.conf;
+    try_files $uri $uri/ =404;
+
+    # Matomo $_SERVER variables
+    fastcgi_param MM_COUNTRY_CODE $geoip2_data_country_code;
+    fastcgi_param MM_CONTINENT_NAME $geoip2_data_continent_name;
+    fastcgi_param MM_COUNTRY_CODE $geoip2_data_country_code;
+    fastcgi_param MM_COUNTRY_NAME $geoip2_data_country_name;
+    fastcgi_param MM_REGION_CODE $geoip2_data_region_iso;
+    fastcgi_param MM_REGION_NAME $geoip2_data_region_name;
+    fastcgi_param MM_LATITUDE $geoip2_data_location_latitude;
+    fastcgi_param MM_LONGITUDE $geoip2_data_location_longitude;
+    fastcgi_param MM_POSTAL_CODE $geoip2_data_postal_code;
+    fastcgi_param MM_CITY_NAME $geoip2_data_city_name;
+    fastcgi_param MM_ISP $geoip2_data_autonomous_system_organization;
+    fastcgi_param MM_ORG $geoip2_data_autonomous_system_number;
+  }
+
+  ## disable all access to the following directories
+  location ~ ^/(config|tmp|core|lang) {
+    deny all;
+    return 403; # replace with 404 to not show these directories exist
+  }
+
+  location ~ /\.ht {
+    deny  all;
+    return 403;
+  }
+
+  location ~ js/container_.*_preview\.js$ {
+    expires off;
+    add_header Cache-Control 'private, no-cache, no-store';
+  }
+
+  location ~ ^/(libs|vendor|misc|node_modules) {
+    deny all;
+    return 403;
+  }
+
+  location ~ \.(gif|ico|jpg|png|svg|js|css|htm|html|mp3|mp4|wav|ogg|avi|ttf|eot|woff|woff2)$ {
+    allow all;
+    ## Cache images,CSS,JS and webfonts for an hour
+    ## Increasing the duration may improve the load-time, but may cause old files to show after an Matomo upgrade
+    expires 1h;
+    add_header Pragma public;
+    add_header Cache-Control "public";
+  }
+
+  include /usr/local/nginx/conf/php.conf;
+  
+  include /usr/local/nginx/conf/pre-staticfiles-local-u.domain.com.com.conf;
+  include /usr/local/nginx/conf/pre-staticfiles-global.conf;
+  #include /usr/local/nginx/conf/staticfiles.conf;
+  #include /usr/local/nginx/conf/drop.conf;
+  #include /usr/local/nginx/conf/errorpage.conf;
+  include /usr/local/nginx/conf/vts_server.conf;
+}
+```
+
+### Cloudflare Full SSL
+
+If you run Cloudflare orange cloud enabled proxy in front of Matomo site and have set Cloudflare Full/Full Strict SSL and set Cloudflare to always redirect to HTTPS, you may need to comment out the Centmin Mod Nginx non-HTTPS port 80 to HTTPS port 443 redirect `server{}` context
+
+change in `/usr/local/nginx/conf/conf.d/u.domain.com.ssl.conf` from
+
+```
+ server {
+   listen   80;
+   #x#   listen   [::]:80;
+   server_name u.domain.com.com www.u.domain.com.com;
+   return 302 https://u.domain.com.com$request_uri;
+   root /home/nginx/domains/u.domain.com.com/public;
+   include /usr/local/nginx/conf/staticfiles.conf;
+ }
+```
+
+to
+
+```
+# server {
+#   listen   80;
+#   #x#   listen   [::]:80;
+#   server_name u.domain.com.com www.u.domain.com.com;
+#   return 302 https://u.domain.com.com$request_uri;
+#   root /home/nginx/domains/u.domain.com.com/public;
+#   include /usr/local/nginx/conf/staticfiles.conf;
+# }
 ```
 
 Turn off the default `disable_function` for `shell_exec` as Matomo requires the use of it.
